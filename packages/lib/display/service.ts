@@ -52,7 +52,7 @@ export const getDisplay = async (displayId: string): Promise<TDisplay | null> =>
         return display;
       } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-          throw new DatabaseError(error.message);
+          throw new DatabaseError(`Error fetching display: ${error.message}`);
         }
 
         throw error;
