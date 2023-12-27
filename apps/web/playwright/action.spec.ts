@@ -3,33 +3,33 @@ import { Page, expect, test } from "@playwright/test";
 
 import { login } from "./utils/helper";
 
-const createNoCodeActionByCSSSelector = async (
+const createNoCodeAction = async (
   page: Page,
   email: string,
   password: string,
   name: string,
   description: string,
-  selector: string
+  actionType: string,
+  actionValue: string
 ) => {
-  // await signUpAndLogin(page, name, email, password);
   await login(page, email, password);
-  // await skipOnboarding(page);
 
   await page.getByRole("link", { name: "Actions & Attributes" }).click();
-
-  // Add Action button
   await page.getByRole("button", { name: "Add Action" }).click();
 
-  // User fills the action name and description
   await expect(page.getByLabel("What did your user do?")).toBeVisible();
   await page.getByLabel("What did your user do?").fill(name);
 
   await expect(page.getByLabel("Description")).toBeVisible();
   await page.getByLabel("Description").fill(description);
 
-  // User toggles the CSS Selector action type
+  await expect(page.locator(`#${actionType}`)).toBeVisible();
+  await page.locator(`#${actionType}`).click();
 
-  await expect(page.locator("#CssSelector")).toBeVisible();
+  await expect(page.locator(`[name='noCodeConfig.${actionType}.value']`)).toBeVisible();
+  await page.locator(`[name='noCodeConfig.${actionType}.value']`).fill(actionValue);
+  await page.getByRole("button", { name: "Track Action", exact: true }).click();
+};
   await page.locator("#CssSelector").click();
 
   // User fills the CSS Selector to track
