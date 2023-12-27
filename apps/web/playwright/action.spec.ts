@@ -1,13 +1,13 @@
-import { actions, users } from "@/playwright/utils/mock";
-import { Page, expect, test } from "@playwright/test";
-
-import { login } from "./utils/helper";
-
-const createNoCodeActionByCSSSelector = async (
-  page: Page,
-  email: string,
-  password: string,
-  name: string,
+const WHAT_DID_YOUR_USER_DO = 'What did your user do?';
+const DESCRIPTION = 'Description';
+const TRACK_ACTION = 'Track Action';
+const ADD_ACTION = 'Add Action';
+const SAVE_CHANGES = 'Save changes';
+const SETTINGS = 'Settings';
+const TEST_MATCH = 'Test Match';
+const CODE = 'Code';
+const ACTIONS_AND_ATTRIBUTES = 'Actions & Attributes';
+const DELETE = 'Delete';
   description: string,
   selector: string
 ) => {
