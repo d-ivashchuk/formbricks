@@ -169,10 +169,11 @@ export const createDisplay = async (displayInput: TDisplayCreateInput): Promise<
   try {
     let person;
     if (userId) {
-      person = await getPersonByUserId(environmentId, userId);
-      if (!person) {
-        person = await createPerson(environmentId, userId);
-      }
+      person = await prisma.person.upsert({
+        where: { userId: userId },
+        update: {},
+        create: { userId: userId, environmentId: environmentId }
+      });
     }
     const displayPrisma = await prisma.display.create({
       data: {
@@ -207,7 +208,6 @@ export const createDisplay = async (displayInput: TDisplayCreateInput): Promise<
     throw error;
   }
 };
-
 export const createDisplayLegacy = async (displayInput: TDisplayLegacyCreateInput): Promise<TDisplay> => {
   validateInputs([displayInput, ZDisplayLegacyCreateInput]);
   try {
