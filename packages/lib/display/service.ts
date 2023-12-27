@@ -64,19 +64,19 @@ export const getDisplay = async (displayId: string): Promise<TDisplay | null> =>
       revalidate: SERVICES_REVALIDATION_INTERVAL,
     }
   )();
-  return display ? formatDateFields({ ...display, status: null }, ZDisplay) : null;
-};
-
-export const updateDisplay = async (
-  displayId: string,
-  displayInput: TDisplayUpdateInput
-): Promise<TDisplay> => {
-  validateInputs([displayInput, ZDisplayUpdateInput.partial()]);
-
-  let person: TPerson | null = null;
-  if (displayInput.userId) {
-    person = await getPersonByUserId(displayInput.environmentId, displayInput.userId);
-    if (!person) {
+  67:   return display ? formatDateFields({ ...display }, ZDisplay) : null;
+  
+  105:     const display = { ...displayPrisma };
+  
+  148:     const display = { ...displayPrisma };
+  
+  195:     const display = { ...displayPrisma };
+  
+  232:     const display = { ...displayPrisma };
+  
+  335:     const display = { ...displayPrisma };
+  
+  319:   return displays.map((display) => formatDateFields({ ...display }, ZDisplay));
       throw new ResourceNotFoundError("Person", displayInput.userId);
     }
   }
