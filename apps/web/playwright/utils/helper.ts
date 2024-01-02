@@ -57,9 +57,14 @@ export const signupUsingInviteToken = async (page: Page, name: string, email: st
   await page.getByPlaceholder("Full Name").fill(name);
   await page.getByPlaceholder("Full Name").press("Tab");
 
-  // the email is already filled in the input field
+  // Validate that the email is filled in the input field
   const inputValue = await page.getByPlaceholder("work@email.com").inputValue();
-  expect(inputValue).toEqual(email);
+  if (!inputValue) {
+    throw new Error("Email field is empty");
+  }
+  if (inputValue !== email) {
+    throw new Error(`Expected email to be ${email}, but got ${inputValue}`);
+  }
 
   await page.getByPlaceholder("work@email.com").press("Tab");
   await page.getByPlaceholder("*******").fill(password);
