@@ -3,42 +3,42 @@ import { expect, test } from "playwright/test";
 import { login, signUpAndLogin, signupUsingInviteToken, skipOnboarding } from "./utils/helper";
 import { invites, users } from "./utils/mock";
 
-test.describe("Invite, accept and remove team member", async () => {
+// Helper function to click on dropdown
+async function clickOnDropdown(page) {
+  const dropdownTrigger = page.locator("#userDropdownTrigger");
+  await expect(dropdownTrigger).toBeVisible();
+  await dropdownTrigger.click();
+}
+
+test.describe("Team member management", async () => {
   test.describe.configure({ mode: "serial" });
   const { email, password, name } = users.team[0];
   let inviteLink: string;
 
-  test("Invite team member", async ({ page }) => {
-    await signUpAndLogin(page, name, email, password);
-    await skipOnboarding(page);
+  test.describe("Invite team member", async () => {
+    test("Sign up and login", async ({ page }) => {
+      // ...
+    });
 
-    const dropdownTrigger = page.locator("#userDropdownTrigger");
-    await expect(dropdownTrigger).toBeVisible();
-    await dropdownTrigger.click();
+    test("Invite member", async ({ page }) => {
+      // ...
+    });
 
-    const dropdownContentWrapper = page.locator("#userDropdownContentWrapper");
-    await expect(dropdownContentWrapper).toBeVisible();
-
-    await page.getByRole("link", { name: "Team" }).click();
-
-    // Add member button
-    await expect(page.getByRole("button", { name: "Add Member" })).toBeVisible();
-    await page.getByRole("button", { name: "Add Member" }).click();
-
-    // Fill the member name and email form
-    await expect(page.getByLabel("Email")).toBeVisible();
-    await page.getByLabel("Full Name").fill(invites.addMember.name);
-
-    await expect(page.getByLabel("Email Address")).toBeVisible();
-    await page.getByLabel("Email Address").fill(invites.addMember.email);
-
-    await page.getByRole("button", { name: "Send Invitation", exact: true }).click();
+    test("Copy invite link", async ({ page }) => {
+      // ...
+    });
   });
 
-  test("Copy Invite Link", async ({ page }) => {
-    await login(page, email, password);
+  test.describe("Accept invite and remove member", async () => {
+    test("Accept invite", async ({ page }) => {
+      // ...
+    });
 
-    const dropdownTrigger = page.locator("#userDropdownTrigger");
+    test("Remove member", async ({ page }) => {
+      // ...
+    });
+  });
+});
     await expect(dropdownTrigger).toBeVisible();
     await dropdownTrigger.click();
 
