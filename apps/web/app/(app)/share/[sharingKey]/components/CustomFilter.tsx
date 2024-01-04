@@ -142,21 +142,21 @@ const CustomFilter = ({ environmentTags, responses, survey, totalResponses }: Cu
 
   const extracMetadataKeys = useCallback((obj, parentKey = "") => {
     let keys: string[] = [];
-
-    for (let key in obj) {
-      if (typeof obj[key] === "object" && obj[key] !== null) {
-        keys = keys.concat(extracMetadataKeys(obj[key], parentKey + key + " - "));
-      } else {
-        keys.push(parentKey + key);
+    let stack = [{ obj, parentKey }];
+  
+    while (stack.length > 0) {
+      const { obj, parentKey } = stack.pop();
+      for (let key in obj) {
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+          stack.push({ obj: obj[key], parentKey: parentKey + key + " - " });
+        } else {
+          keys.push(parentKey + key);
+        }
       }
     }
-
+  
     return keys;
   }, []);
-
-  const downloadResponses = useCallback(
-    async (filter: FilterDownload, filetype: "csv" | "xlsx") => {
-      const downloadResponse = filter === FilterDownload.ALL ? totalResponses : responses;
       const questionNames = survey.questions?.map((question) => question.headline);
       const hiddenFieldIds = survey.hiddenFields.fieldIds;
       const hiddenFieldResponse = {};
