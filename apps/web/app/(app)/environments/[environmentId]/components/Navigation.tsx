@@ -81,7 +81,7 @@ export default function Navigation({
   isFormbricksCloud,
   webAppUrl,
   membershipRole,
-}: NavigationProps) {
+const { imageUrl, id, name } = session.user;
   const router = useRouter();
   const pathname = usePathname();
   const [currentTeamName, setCurrentTeamName] = useState("");
