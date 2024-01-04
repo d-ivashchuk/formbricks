@@ -73,7 +73,7 @@ export default function WhenToSendCard({
     setLocalSurvey(updatedSurvey);
   };
 
-  const handleCheckMark = () => {
+  const handleCheckMark = useCallback(() => {
     if (autoClose) {
       const updatedSurvey = { ...localSurvey, autoClose: null };
       setLocalSurvey(updatedSurvey);
@@ -81,7 +81,7 @@ export default function WhenToSendCard({
       const updatedSurvey = { ...localSurvey, autoClose: 10 };
       setLocalSurvey(updatedSurvey);
     }
-  };
+  }, [autoClose, localSurvey, setLocalSurvey]);
 
   const handleInputSeconds = (e: any) => {
     let value = parseInt(e.target.value);
