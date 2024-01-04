@@ -26,17 +26,17 @@ const ResponseFilter = () => {
   const { selectedFilter, setSelectedFilter, selectedOptions } = useResponseFilter();
 
   const handleOnChangeQuestionComboBoxValue = (value: QuestionOption, index: number) => {
-    if (selectedFilter.filter[index].questionType) {
-      // Create a new array and copy existing values from SelectedFilter
-      selectedFilter.filter[index] = {
-        questionType: value,
-        filterType: {
-          filterComboBoxValue: undefined,
-          filterValue: selectedOptions.questionFilterOptions.find(
-            (q) => q.type === value.type || q.type === value.questionType
-          )?.filterOptions[0],
-        },
-      };
+    selectedFilter.filter[index] = {
+      questionType: value,
+      filterType: {
+        filterComboBoxValue: undefined,
+        filterValue: selectedOptions.questionFilterOptions.find(
+          (q) => q.type === value.type || q.type === value.questionType
+        )?.filterOptions[0],
+      },
+    };
+    setSelectedFilter({ filter: [...selectedFilter.filter], onlyComplete: selectedFilter.onlyComplete });
+  };
       setSelectedFilter({ filter: [...selectedFilter.filter], onlyComplete: selectedFilter.onlyComplete });
     } else {
       // Update the existing value at the specified index
