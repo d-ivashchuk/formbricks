@@ -83,14 +83,14 @@ export default function WhenToSendCard({
     }
   };
 
-  const handleInputSeconds = (e: any) => {
+  const handleInputSeconds = useCallback((e: any) => {
     let value = parseInt(e.target.value);
-
+  
     if (value < 1) value = 1;
-
+  
     const updatedSurvey = { ...localSurvey, autoClose: value };
     setLocalSurvey(updatedSurvey);
-  };
+  }, [localSurvey, setLocalSurvey]);
 
   const handleTriggerDelay = (e: any) => {
     let value = parseInt(e.target.value);
