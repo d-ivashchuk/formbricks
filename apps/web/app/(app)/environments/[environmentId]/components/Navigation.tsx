@@ -151,7 +151,7 @@ export default function Navigation({
     [environment.id, pathname, isViewer]
   );
 
-  const dropdownnavigation = [
+  const dropdownnavigation = useMemo(() => [
     {
       title: "Survey",
       links: [
@@ -169,8 +169,8 @@ export default function Navigation({
         },
       ],
     },
-    {
-      title: "Account",
+    // ... rest of the array
+  ], [environment.id, isViewer]);
       links: [
         {
           icon: UserCircleIcon,
