@@ -87,36 +87,36 @@ const CustomFilter = ({ environmentTags, responses, survey, totalResponses }: Cu
 
   const datePickerRef = useRef<HTMLDivElement>(null);
 
+  const createQuestionIdToHeadlineMapping = (questions) => {
+    const mapping = {};
+    questions.forEach((question) => {
+      mapping[question.id] = question.headline;
+    });
+    return mapping;
+  };
+  
+  const replaceQuestionIdsWithHeadlines = (responses, questionIdToHeadline) => {
+    return responses.map((response) => {
+      const updatedResponse: Array<{ id: string; question: string; answer: string; type: string; scale?: "number" | "star" | "smiley"; range?: number; }> = [];
+      for (const question of survey.questions) {
+        const answer = response.data[question.id];
+        if (answer) {
+          updatedResponse.push({ id: createId(), question: question.headline, type: question.type, scale: question.scale, range: question.range, answer: answer as string, });
+        }
+      }
+      return { ...response, responses: updatedResponse };
+    });
+  };
+  
   const getMatchQandA = (responses: TResponse[], survey: TSurvey) => {
     if (survey && responses) {
-      // Create a mapping of question IDs to their headlines
-      const questionIdToHeadline = {};
-      survey.questions.forEach((question) => {
-        questionIdToHeadline[question.id] = question.headline;
-      });
-
-      // Replace question IDs with question headlines in response data
-      const updatedResponses = responses.map((response) => {
-        const updatedResponse: Array<{
-          id: string;
-          question: string;
-          answer: string;
-          type: string;
-          scale?: "number" | "star" | "smiley";
-          range?: number;
-        }> = []; // Specify the type of updatedData
-        // iterate over survey questions and build the updated response
-        for (const question of survey.questions) {
-          const answer = response.data[question.id];
-          if (answer) {
-            updatedResponse.push({
-              id: createId(),
-              question: question.headline,
-              type: question.type,
-              scale: question.scale,
-              range: question.range,
-              answer: answer as string,
-            });
+      const questionIdToHeadline = createQuestionIdToHeadlineMapping(survey.questions);
+      const updatedResponses = replaceQuestionIdsWithHeadlines(responses, questionIdToHeadline);
+      const updatedResponsesWithTags = updatedResponses.map((response) => ({ ...response, tags: response.tags?.map((tag) => tag), }));
+      return updatedResponsesWithTags;
+    }
+    return [];
+  };
           }
         }
         return { ...response, responses: updatedResponse };
