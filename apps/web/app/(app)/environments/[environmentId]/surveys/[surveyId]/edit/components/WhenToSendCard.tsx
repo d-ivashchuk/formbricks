@@ -92,11 +92,11 @@ export default function WhenToSendCard({
     setLocalSurvey(updatedSurvey);
   };
 
-  const handleTriggerDelay = (e: any) => {
+  const handleTriggerDelay = useCallback((e: any) => {
     let value = parseInt(e.target.value);
     const updatedSurvey = { ...localSurvey, delay: value };
     setLocalSurvey(updatedSurvey);
-  };
+  }, [localSurvey, setLocalSurvey]);
 
   useEffect(() => {
     if (isAddEventModalOpen) return;
