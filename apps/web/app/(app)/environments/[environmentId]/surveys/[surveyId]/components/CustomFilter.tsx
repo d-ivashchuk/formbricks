@@ -155,38 +155,38 @@ const CustomFilter = ({ environmentTags, responses, survey, totalResponses }: Cu
     return keys;
   }, []);
 
+  const createBasicInfo = (response) => {
+    return {
+      "Response ID": response.id,
+      Timestamp: response.createdAt,
+      Finished: response.finished,
+      "Survey ID": response.surveyId,
+      "Formbricks User ID": response.person?.id ?? "",
+    };
+  };
+  
+  const createMetaData = (response, metaDataKeys, metaDataFields) => {
+    let metaData = {};
+    metaDataKeys.forEach((key) => {
+      // ... existing code ...
+    });
+    return metaData;
+  };
+  
+  const createFileResponse = (basicInfo, metaData, personAttributes, hiddenFieldResponse) => {
+    return { ...basicInfo, ...metaData, ...personAttributes, ...hiddenFieldResponse };
+  };
+  
   const downloadResponses = useCallback(
     async (filter: FilterDownload, filetype: "csv" | "xlsx") => {
-      const downloadResponse = filter === FilterDownload.ALL ? totalResponses : responses;
-      const questionNames = survey.questions?.map((question) => question.headline);
-      const hiddenFieldIds = survey.hiddenFields.fieldIds;
-      const hiddenFieldResponse = {};
-      let metaDataFields = extracMetadataKeys(downloadResponse[0].meta);
-      const userAttributes = ["Init Attribute 1", "Init Attribute 2"];
-      const matchQandA = getMatchQandA(downloadResponse, survey);
-      const jsonData = matchQandA.map((response) => {
-        const basicInfo = {
-          "Response ID": response.id,
-          Timestamp: response.createdAt,
-          Finished: response.finished,
-          "Survey ID": response.surveyId,
-          "Formbricks User ID": response.person?.id ?? "",
-        };
-        const metaDataKeys = extracMetadataKeys(response.meta);
-        let metaData = {};
-        metaDataKeys.forEach((key) => {
-          if (!metaDataFields.includes(key)) metaDataFields.push(key);
-          if (response.meta) {
-            if (key.includes("-")) {
-              const nestedKeyArray = key.split("-");
-              metaData[key] = response.meta[nestedKeyArray[0].trim()][nestedKeyArray[1].trim()] ?? "";
-            } else {
-              metaData[key] = response.meta[key] ?? "";
-            }
-          }
-        });
-
-        const personAttributes = response.personAttributes;
+      // ... existing code ...
+      const basicInfo = createBasicInfo(response);
+      const metaData = createMetaData(response, metaDataKeys, metaDataFields);
+      const fileResponse = createFileResponse(basicInfo, metaData, personAttributes, hiddenFieldResponse);
+      // ... existing code ...
+    },
+    [downloadFileName, responses, totalResponses, survey, extracMetadataKeys]
+  );
         if (hiddenFieldIds && hiddenFieldIds.length > 0) {
           hiddenFieldIds.forEach((hiddenFieldId) => {
             hiddenFieldResponse[hiddenFieldId] = response.data[hiddenFieldId] ?? "";
