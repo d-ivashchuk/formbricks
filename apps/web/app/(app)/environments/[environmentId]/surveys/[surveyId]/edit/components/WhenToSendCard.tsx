@@ -67,11 +67,11 @@ export default function WhenToSendCard({
     [actionClassArray, localSurvey, setLocalSurvey]
   );
 
-  const removeTriggerEvent = (idx: number) => {
+  const removeTriggerEvent = useCallback((idx: number) => {
     const updatedSurvey = { ...localSurvey };
     updatedSurvey.triggers = [...localSurvey.triggers.slice(0, idx), ...localSurvey.triggers.slice(idx + 1)];
     setLocalSurvey(updatedSurvey);
-  };
+  }, [localSurvey, setLocalSurvey]);
 
   const handleCheckMark = () => {
     if (autoClose) {
