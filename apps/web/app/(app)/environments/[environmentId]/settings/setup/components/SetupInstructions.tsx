@@ -1,22 +1,22 @@
-"use client";
+const initFormbricks = (environmentId, apiHost) => {
+  return `import formbricks from "@formbricks/js";
 
-import jsPackageJson from "@/../../packages/js/package.json";
-import packageJson from "@/package.json";
-import Link from "next/link";
-import "prismjs/themes/prism.css";
-import { useState } from "react";
-import { IoLogoHtml5, IoLogoNpm } from "react-icons/io5";
+  if (typeof window !== "undefined") {
+    formbricks.init({
+      environmentId: "${environmentId}",
+      apiHost: "${apiHost}",
+      debug: true, // remove when in production 
+    });
+  }`;
+}
 
-import CodeBlock from "@formbricks/ui/CodeBlock";
-import { TabBar } from "@formbricks/ui/TabBar";
+// Use the function in the code
 
-const tabs = [
-  { id: "npm", label: "NPM", icon: <IoLogoNpm /> },
-  { id: "html", label: "HTML", icon: <IoLogoHtml5 /> },
-];
+// For the npm tab
+<CodeBlock language="js">{initFormbricks(environmentId, webAppUrl)}</CodeBlock>
 
-export default function SetupInstructions({
-  environmentId,
+// For the html tab
+<CodeBlock language="js">{initFormbricks(environmentId, `"${window.location.protocol}//${window.location.host}"`)}</CodeBlock>
   webAppUrl,
   isFormbricksCloud,
 }: {
